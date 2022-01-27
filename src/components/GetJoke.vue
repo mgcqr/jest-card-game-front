@@ -1,5 +1,5 @@
 <template>
-  <div class="demo">
+  <div>
     <button @click="load">GetJoke</button>
     <p>{{info}}</p>
   </div>
@@ -14,21 +14,27 @@ export default {
       info : null
     }
   },
+  emits: {//自定义事件
+    loadReadyEvent: null
+  },
   methods:{
-    load () {
-      axios
-        //.get('https://autumnfish.cn/api/joke')
-        //.get('http://localhost:8081/home/hello')
-        .get('/joke')
-        .then(
-          response => {
-            this.info=response.data
-            console.log(response)
-          }
-        )
-        .catch(function (error) { // 请求失败处理
-          console.log(error);
-        });
+    async load () {//同步方法
+      await axios({
+        method : 'get',
+        url : '/joke'
+      })
+      .then(
+        response => {
+          this.info=response.data
+          console.log(response)
+        }
+      )
+      .catch(function (error) { // 请求失败处理
+        console.log(error);
+      });
+
+      this.$emit('loadReadyEvent');//触发自定义事件
+
     }
   }
 }

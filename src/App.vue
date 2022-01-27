@@ -1,7 +1,8 @@
 <template>
   <img alt="Vue logo" src="./assets/logo.png">
   <!-- <HelloWorld msg="Welcome to Your Vue.js App"/> -->
-  <GetJoke></GetJoke>
+  <GetJoke @load-ready-event="fatherFun"></GetJoke>
+  <!-- 只有父组件接受子组件定义的事件只能绑定在子组件上 -->
   <LoginHello></LoginHello>
   <WebsocketDemo></WebsocketDemo>
 </template>
@@ -19,6 +20,11 @@ export default {
     GetJoke,
     LoginHello,
     WebsocketDemo
+  },
+  methods:{
+    fatherFun(){
+      console.log('load ready')
+    }
   }
 }
 </script>
