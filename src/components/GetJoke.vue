@@ -1,6 +1,6 @@
 <template>
   <div>
-    <button @click="load">GetJoke</button>
+    <el-button @click="load">GetJoke</el-button>
     <p>{{info}}</p>
   </div>
 </template>

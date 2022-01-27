@@ -5,6 +5,8 @@
   <!-- 只有父组件接受子组件定义的事件只能绑定在子组件上 -->
   <LoginHello></LoginHello>
   <WebsocketDemo></WebsocketDemo>
+  <el-button>Default</el-button>
+  <el-button type="primary">Primary</el-button>
 </template>
 
 <script>
