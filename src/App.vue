@@ -1,21 +1,22 @@
 <template>
-  <AppTry></AppTry>
+  <img alt="developping logo" src="./assets/developping.png" />
+  <Login></Login>
 </template>
 
 <script>
-import AppTry from './AppTry.vue'
+import Login from "./components/Login.vue";
 
 export default {
-  name: 'App',
+  name: "App",
   components: {
-   AppTry
+    Login,
   },
-  methods:{
-    fatherFun(){
-      console.log('load ready')
-    }
-  }
-}
+  methods: {
+    fatherFun() {
+      console.log("load ready");
+    },
+  },
+};
 </script>
 
 <style>
