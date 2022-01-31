@@ -10,5 +10,5 @@ import App from './App.vue'
 
 const app = createApp(App)
 app.use(ElementPlus)
-app.use(VueAxios,axios);
+app.use(VueAxios,axios)
 app.mount('#app')

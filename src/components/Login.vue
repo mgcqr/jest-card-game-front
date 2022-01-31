@@ -9,6 +9,7 @@
       :show-close="false"
     >
       <div id="login">
+        <p>{{ loginMsg }}</p>
         <el-input v-model="userName" placeholder="userName" />
         <el-input
           v-model="passWord"
@@ -16,13 +17,11 @@
           type="password"
           show-password
         />
-        <!-- <button @click="login">login</button> -->
-        <!-- <p>{{ loginMsg }}</p> -->
       </div>
       <template #footer>
         <span class="dialog-footer">
-          <el-button @click="change">{{ defaultBtnText }}</el-button>
-          <el-button type="primary" @click="login">{{ primaryBtnText }}</el-button>
+          <el-button @click="signUp">Sign Up</el-button>
+          <el-button type="primary" @click="logIn">Log In</el-button>
         </span>
       </template>
     </el-dialog>
@@ -30,66 +29,95 @@
 </template>
 
 <script>
-import axios from "axios";
+import rsa from "../util/Rsa";
+import ResponseReader from "../util/ResponseReader";
+
+function thenFun(response, that) {
+  console.log(response);
+  that.loginMsg = ResponseReader.getMessage(response);
+  that.token = ResponseReader.getPayload(response).token;
+}
+
 export default {
   name: "Login",
   data() {
     return {
-      title: "Log In",
       userName: null,
       passWord: null,
       loginMsg: null,
-      helloMsg: null,
       token: null,
+      publicKey: null,
+
+      title: "wellcom",
       dialogVisible: true,
-      defaultBtnText: "Sign Up",
-      primaryBtnText: "Log In",
-      isLoggingIn: true,
     };
   },
   methods: {
-    login() {
-      let postData = {
+    logIn() {
+      let dto = {
         userName: this.userName,
-        passWord: this.passWord,
-        isLoggingIn: this.isLoggingIn,
+        passWord: rsa.encrypt(this.passWord, this.publicKey),
       };
-      axios({
-        method: "post",
+      this.axios({
+        method: "put",
         url: "/api/login",
         headers: {
           "Content-Type": "application/json",
         },
-        data: postData,
+        data: dto,
       })
         .then((response) => {
-          this.loginMsg = response.data;
-          this.token = response.data.token;
-          console.log(response);
+          thenFun(response, this);
         })
         .catch(function (error) {
           // 请求失败处理
           console.log(error);
         });
     },
-    change() {
-      if (this.isLoggingIn) {
-        this.title = "Sign Up";
-        this.defaultBtnText = "Log In";
-        this.primaryBtnText = "Sign Up";
-      } else {
-        this.title = "Log In";
-        this.defaultBtnText = "Sign Up";
-        this.primaryBtnText = "Log In";
-      }
-      this.isLoggingIn = !this.isLoggingIn;
-      console.log(this.isLoggingIn);
+    signUp() {
+      let dto = {
+        userName: this.userName,
+        passWord: rsa.encrypt(this.passWord, this.publicKey),
+      };
+      this.axios({
+        method: "post",
+        url: "/api/login/sign-up",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        data: dto,
+      })
+        .then((response) => {
+          thenFun(response, this);
+        })
+        .catch(function (error) {
+          // 请求失败处理
+          console.log(error);
+        });
     },
 
     handleClose(done) {
       console.log("closing");
       done();
     },
+  },
+  mounted() {
+    this.axios({
+      method: "get",
+      url: "/api/login/public-key",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    })
+      .then((response) => {
+        this.publicKey = ResponseReader.getPayload(response).public_key;
+        // console.log(response);
+        // console.log(this.publicKey);
+      })
+      .catch(function (error) {
+        // 请求失败处理
+        console.log(error);
+      });
   },
 };
 </script>
