@@ -1,35 +1,17 @@
 <template>
-  <img alt="Vue logo" src="./assets/logo.png" />
-
-  <GetJoke
-    @load-ready-event="fatherFun"
-    class="animate__animated animate__bounce"
-  ></GetJoke>
-
-  <Animat></Animat>
-
-  <!-- <el-container>
-    <el-header>Header</el-header>
-    <el-container>
-      <el-aside width="200px">Aside</el-aside>
-      <el-container>
-        <el-main>left</el-main>
-        <el-main>right</el-main>
-      </el-container>
-    </el-container>
-  </el-container> -->
+  <!-- <img alt="Vue logo" src="./assets/logo.png" /> -->
+  <GamePad></GamePad>
+ 
+  
 </template>
-
 <script>
-import GetJoke from "./demo/GetJoke.vue";
-import Animat from "./demo/Animat.vue";
-import "animate.css";
+import "animate.css"
+import GamePad from "./components/GamePad.vue";
 
 export default {
   name: "AppTry",
   components: {
-    GetJoke,
-    Animat,
+    GamePad,
   },
 };
 </script>
