@@ -1,12 +1,12 @@
 <template>
   <img alt="Vue logo" src="./assets/logo.png" />
-  <!-- <HelloWorld msg="Welcome to Your Vue.js App"/> -->
-  <GetJoke @load-ready-event="fatherFun"></GetJoke>
-  <!-- 只有父组件接受子组件定义的事件只能绑定在子组件上 -->
-  <LoginHello></LoginHello>
-  <WebsocketDemo></WebsocketDemo>
 
-  <el-container>
+  <GetJoke
+    @load-ready-event="fatherFun"
+    class="animate__animated animate__bounce"
+  ></GetJoke>
+
+  <!-- <el-container>
     <el-header>Header</el-header>
     <el-container>
       <el-aside width="200px">Aside</el-aside>
@@ -15,27 +15,17 @@
         <el-main>right</el-main>
       </el-container>
     </el-container>
-  </el-container>
+  </el-container> -->
 </template>
 
 <script>
-//import HelloWorld from './components/HelloWorld.vue'
-import GetJoke from "./components/playground/GetJoke.vue";
-import LoginHello from "./components/playground/LoginHello.vue";
-import WebsocketDemo from "./components/playground/WebsocketDemo.vue";
+import GetJoke from "./demo/GetJoke.vue";
+import "animate.css";
 
 export default {
   name: "AppTry",
   components: {
-    // HelloWorld,
     GetJoke,
-    LoginHello,
-    WebsocketDemo,
-  },
-  methods: {
-    fatherFun() {
-      console.log("load ready");
-    },
   },
 };
 </script>
