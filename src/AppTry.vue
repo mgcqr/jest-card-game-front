@@ -6,6 +6,8 @@
     class="animate__animated animate__bounce"
   ></GetJoke>
 
+  <Animat></Animat>
+
   <!-- <el-container>
     <el-header>Header</el-header>
     <el-container>
@@ -20,12 +22,14 @@
 
 <script>
 import GetJoke from "./demo/GetJoke.vue";
+import Animat from "./demo/Animat.vue";
 import "animate.css";
 
 export default {
   name: "AppTry",
   components: {
     GetJoke,
+    Animat,
   },
 };
 </script>

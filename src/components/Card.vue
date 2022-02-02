@@ -1,40 +1,33 @@
 <template>
-  <div>
-    <el-button @click="show">show</el-button>
-    <hr />
-
-    <el-row>
-      <el-col :span="3">
-        <Card v-show="isShow" cardName="CardBack"></Card>
-      </el-col>
-    </el-row>
-  </div>
+  <transition :appear="true">
+    <el-card
+      class="box-card animate__animated"
+      :body-style="{ padding: '0px'}"
+    >
+      <img :src="imageSrc" class="image" />
+    </el-card>
+  </transition>
 </template>
 
 <script>
-import "animate.css";
-import Card from "../components/Card.vue";
-
+//import image from "../assets/card-img/CardBack.png"
 export default {
-  name: "Animate",
+  name:"Card",
   data() {
     return {
-      isShow: true,
+      imageSrc: require('../assets/card-img/' + this.cardName + '.png')
     };
   },
-  components:{
-    Card,
-  },
-  methods: {
-    show() {
-      this.isShow = !this.isShow;
-    },
+  props:{
+    cardName: String,
+    
   },
 };
 </script>
 
 <style scoped>
 .box-card {
+  /* 截图截出来是156*207 */
   width: 156px;
 }
 
@@ -46,9 +39,5 @@ export default {
   animation: backOutLeft; /* referring directly to the animation's @keyframe declaration */
   animation-duration: 2s; /* don't forget to set a duration! */
 }
-
-/* .image {
-  width: 100%;
-  display: block;
-} */
 </style>
+
