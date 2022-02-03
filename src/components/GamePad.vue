@@ -1,5 +1,5 @@
 <template>
-  <el-container class="el-container">
+  <el-container class="el-container pad">
     <el-main class="el-container">
       <el-row>
         <el-col :span="3">
@@ -40,11 +40,16 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
 .el-container {
   border-width: 1px;
   border-style: solid;
   border-color: red;
-  height: 800px;
+}
+
+.pad {
+  height: 100%;
+  margin: 0px;
+  padding: 0px;
 }
 </style>

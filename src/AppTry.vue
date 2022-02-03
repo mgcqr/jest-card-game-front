@@ -34,9 +34,12 @@ export default {
   color: whitesmoke;
   /* margin-top: 60px; */
 }
-body {
+html,
+body,
+#app {
   margin: 0;
   padding: 0;
+  height: 100%;
   background-color: rgb(103, 171, 0);
 }
 </style>
