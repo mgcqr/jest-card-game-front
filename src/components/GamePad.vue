@@ -1,6 +1,6 @@
 <template>
-  <el-container class="el-container pad">
-    <el-main class="el-container">
+  <el-container class="el-red-border pad">
+    <el-main class="el-red-border">
       <el-row>
         <el-col :span="3">
           <Card cardName="CardBack"></Card>
@@ -36,12 +36,16 @@
 import Card from "./Card.vue";
 
 export default {
+  name: "GamePad",
+  props: {
+    gameId: String,
+  },
   components: { Card },
 };
 </script>
 
 <style scoped>
-.el-container {
+.el-red-border {
   border-width: 1px;
   border-style: solid;
   border-color: red;

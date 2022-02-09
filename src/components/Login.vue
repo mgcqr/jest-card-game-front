@@ -2,11 +2,12 @@
   <div>
     <el-dialog
       v-model="dialogVisible"
-      :title="title"
+      title="wellcome"
       width="30%"
       :before-close="handleClose"
       :close-on-click-modal="false"
       :show-close="false"
+      :close-on-press-escape="false"
     >
       <div id="login">
         <p>{{ loginMsg }}</p>
@@ -33,11 +34,15 @@ import rsa from "../util/Rsa";
 import ResponseReader from "../util/ResponseReader";
 
 function thenFun(response, that) {
-  console.log(response);
+  //console.log(response);
   that.loginMsg = ResponseReader.getMessage(response);
   that.token = ResponseReader.getPayload(response).token;
   if (that.loginMsg === "ok") {
-    that.$emit("tokenReady", that.token);
+    var userInfo = {
+      name : that.userName,
+      token : that.token
+    }
+    that.$emit("loginReady", userInfo);
     that.dialogVisible = false;
   }
 }
@@ -52,12 +57,11 @@ export default {
       token: null,
       publicKey: null,
 
-      title: "wellcom",
       dialogVisible: true,
     };
   },
   emits: {
-    tokenReady: null,
+    loginReady: null,
   },
   methods: {
     logIn() {

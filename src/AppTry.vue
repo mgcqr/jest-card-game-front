@@ -1,6 +1,7 @@
 <template>
   <!-- <img alt="Vue logo" src="./assets/logo.png" /> -->
-  <GamePad></GamePad>
+  <!-- <GamePad></GamePad> -->
+  <Demo></Demo>
 
   <!-- <el-dialog v-model="visible" :fullscreen="true"> </el-dialog> -->
 
@@ -8,8 +9,9 @@
 </template>
 <script>
 import "animate.css";
-import GamePad from "./components/GamePad.vue";
+// import GamePad from "./components/GamePad.vue";
 // import Login from "./components/Login.vue";
+import Demo from "./demo/demo.vue";
 
 export default {
   name: "AppTry",
@@ -19,7 +21,8 @@ export default {
     };
   },
   components: {
-    GamePad,
+    // GamePad,
+    Demo,
     // Login,
   },
 };
