@@ -36,6 +36,10 @@ function thenFun(response, that) {
   console.log(response);
   that.loginMsg = ResponseReader.getMessage(response);
   that.token = ResponseReader.getPayload(response).token;
+  if (that.loginMsg === "ok") {
+    that.$emit("tokenReady", that.token);
+    that.dialogVisible = false;
+  }
 }
 
 export default {
@@ -51,6 +55,9 @@ export default {
       title: "wellcom",
       dialogVisible: true,
     };
+  },
+  emits: {
+    tokenReady: null,
   },
   methods: {
     logIn() {
