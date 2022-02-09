@@ -26,7 +26,9 @@
       <el-footer class="el-red-border footer">
         <p>User Name : {{ userName }}</p>
         <el-button type="info" @click="getGameList">Refresh List</el-button>
-        <el-button type="primary" @click="joinGame">Join Game</el-button>
+        <el-button type="primary" @click="joinGame" :disabled="currentGameId == null"
+          >Join Game</el-button
+        >
       </el-footer>
     </el-container>
   </el-dialog>
@@ -87,11 +89,11 @@ export default {
 </script>
 
 <style scoped>
-.el-red-border {
+/* .el-red-border {
   border-width: 1px;
   border-style: solid;
   border-color: red;
-}
+} */
 .text {
   font-size: 20px;
 }
