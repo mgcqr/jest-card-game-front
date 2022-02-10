@@ -106,6 +106,7 @@ export default {
         this.tableData = payLoad.records;
         this.total = payLoad.total;
       });
+      this.currentGameId = null;
     },
     getGameListFirstPage() {
       this.current = 1;
