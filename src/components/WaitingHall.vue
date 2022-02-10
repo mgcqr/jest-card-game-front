@@ -25,12 +25,27 @@
 
       <el-footer class="el-red-border footer">
         <p>User Name : {{ userName }}</p>
+        <el-button type="info" @click="newGameDialogVisible = true" plain
+          >New Game</el-button
+        >
         <el-button type="info" @click="getGameList">Refresh List</el-button>
         <el-button type="primary" @click="joinGame" :disabled="currentGameId == null"
           >Join Game</el-button
         >
       </el-footer>
     </el-container>
+
+    <el-dialog
+      v-model="newGameDialogVisible"
+      title="New Game"
+      width="30%"
+      :append-to-body="true"
+    >
+      <el-input v-model="inputDescription" placeholder="Game description" />
+      <template #footer>
+        <el-button type="primary" @click="newGame">Confirm</el-button>
+      </template>
+    </el-dialog>
   </el-dialog>
 </template>
 
@@ -40,6 +55,8 @@ export default {
   name: "WaitingHall",
   data() {
     return {
+      inputDescription: null,
+      newGameDialogVisible: false,
       currentGameId: null,
       userName: null,
       visiable: true,
@@ -75,6 +92,22 @@ export default {
     },
     joinGame() {
       this.$emit("joinGame", this.currentGameId);
+      this.visiable = false;
+    },
+    newGame() {
+      if (this.inputDescription == null) return;
+      var urlStr = "/api/waiting-hall/new-game/" + this.inputDescription;
+      this.axios({
+        method: "post",
+        url: urlStr,
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: this.userInfo.token,
+        },
+      });
+
+      this.getGameList();
+      this.newGameDialogVisible = false;
     },
   },
   watch: {

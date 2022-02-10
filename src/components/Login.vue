@@ -2,7 +2,7 @@
   <div>
     <el-dialog
       v-model="dialogVisible"
-      title="wellcome"
+      title="wellcome to Jest"
       width="30%"
       :before-close="handleClose"
       :close-on-click-modal="false"
@@ -39,9 +39,9 @@ function thenFun(response, that) {
   that.token = ResponseReader.getPayload(response).token;
   if (that.loginMsg === "ok") {
     var userInfo = {
-      name : that.userName,
-      token : that.token
-    }
+      name: that.userName,
+      token: that.token,
+    };
     that.$emit("loginReady", userInfo);
     that.dialogVisible = false;
   }
