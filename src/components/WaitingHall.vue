@@ -21,6 +21,17 @@
             <el-table-column prop="description" label="Description"></el-table-column>
           </el-table>
         </el-scrollbar>
+
+        <div class="pagination-block">
+          <el-pagination
+            background
+            layout="prev, pager, next, sizes"
+            :total="total"
+            :page-sizes="[5, 10, 15]"
+            v-model:page-size="size"
+            v-model:current-page="current"
+          ></el-pagination>
+        </div>
       </el-main>
 
       <el-footer class="el-red-border footer">
@@ -28,7 +39,7 @@
         <el-button type="info" @click="newGameDialogVisible = true" plain
           >New Game</el-button
         >
-        <el-button type="info" @click="getGameList">Refresh List</el-button>
+        <el-button type="info" @click="getGameListFirstPage">Refresh List</el-button>
         <el-button type="primary" @click="joinGame" :disabled="currentGameId == null"
           >Join Game</el-button
         >
@@ -61,8 +72,10 @@ export default {
       currentGameId: null,
       userName: null,
       tableData: null,
+
       current: 1,
       size: 5,
+      total: 0,
     };
   },
   props: {
@@ -91,7 +104,12 @@ export default {
       }).then((response) => {
         var payLoad = ResponseReader.getPayload(response);
         this.tableData = payLoad.records;
+        this.total = payLoad.total;
       });
+    },
+    getGameListFirstPage() {
+      this.current = 1;
+      this.getGameList();
     },
     joinGame() {
       var dto = {
@@ -120,7 +138,7 @@ export default {
         },
       });
 
-      this.getGameList();
+      this.getGameListFirstPage();
       this.newGameDialogVisible = false;
     },
   },
@@ -128,11 +146,17 @@ export default {
     userInfo(newUserInfo) {
       if (newUserInfo.token != null) {
         this.userName = newUserInfo.name;
-        this.getGameList();
+        this.getGameListFirstPage();
       }
     },
     visible(newVisible) {
       this.listVisible = newVisible;
+      this.getGameListFirstPage();
+    },
+    current() {
+      this.getGameList();
+    },
+    size() {
       this.getGameList();
     },
   },
@@ -150,5 +174,8 @@ export default {
 }
 .footer {
   text-align: right;
+}
+.pagination-block {
+  margin-top: 10px;
 }
 </style>
