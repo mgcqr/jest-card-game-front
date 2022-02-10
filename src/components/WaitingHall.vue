@@ -1,6 +1,6 @@
 <template>
   <el-dialog
-    v-model="visiable"
+    v-model="listVisible"
     :fullscreen="true"
     :close-on-click-modal="false"
     :show-close="false"
@@ -55,11 +55,11 @@ export default {
   name: "WaitingHall",
   data() {
     return {
+      listVisible: true,
       inputDescription: null,
       newGameDialogVisible: false,
       currentGameId: null,
       userName: null,
-      visiable: true,
       tableData: null,
       current: 1,
       size: 5,
@@ -67,13 +67,16 @@ export default {
   },
   props: {
     userInfo: Object,
+    visible: Boolean,
   },
   emits: {
     joinGame: null,
   },
   methods: {
     handleCurrentChange(currentRow) {
-      this.currentGameId = currentRow.id;
+      if (currentRow != null) {
+        this.currentGameId = currentRow.id;
+      }
     },
     getGameList() {
       var urlStr =
@@ -91,8 +94,19 @@ export default {
       });
     },
     joinGame() {
+      var dto = {
+        id: this.currentGameId,
+      };
+      this.axios({
+        method: "put",
+        url: "/api/waiting-hall/join_game/",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: this.userInfo.token,
+        },
+        data: dto,
+      });
       this.$emit("joinGame", this.currentGameId);
-      this.visiable = false;
     },
     newGame() {
       if (this.inputDescription == null) return;
@@ -116,6 +130,10 @@ export default {
         this.userName = newUserInfo.name;
         this.getGameList();
       }
+    },
+    visible(newVisible) {
+      this.listVisible = newVisible;
+      this.getGameList();
     },
   },
 };

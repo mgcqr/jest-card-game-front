@@ -1,6 +1,10 @@
 <template>
-  <GamePad></GamePad>
-  <WaitingHall :userInfo="this.userInfo" @joinGame="joinGameHandler"></WaitingHall>
+  <GamePad :gameId="gameId" :userInfo="userInfo" @finish="finishHandler"></GamePad>
+  <WaitingHall
+    :userInfo="this.userInfo"
+    :visible="WaitingHallVisible"
+    @joinGame="joinGameHandler"
+  ></WaitingHall>
   <Login @loginReady="loginHandler"></Login>
 </template>
 
@@ -13,7 +17,7 @@ import WaitingHall from "./components/WaitingHall.vue";
 export default {
   name: "App",
   data() {
-    return { userInfo: null, gameId: null };
+    return { userInfo: null, gameId: null, WaitingHallVisible: true };
   },
   components: {
     Login,
@@ -29,7 +33,12 @@ export default {
     joinGameHandler(gameId) {
       //console.log("App.vue logging: " + gameId);
       this.gameId = gameId;
+      this.WaitingHallVisible = false;
       return true;
+    },
+    finishHandler() {
+      this.gameId = null;
+      this.WaitingHallVisible = true;
     },
   },
 };

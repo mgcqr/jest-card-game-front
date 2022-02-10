@@ -30,6 +30,20 @@
       </el-row>
     </el-footer>
   </el-container>
+  <el-dialog
+    v-model="dialogVisible"
+    title="Joing Game"
+    width="30%"
+    :close-on-click-modal="false"
+    :show-close="false"
+    :close-on-press-escape="false"
+  >
+    <span><p>Waiting other players</p></span>
+
+    <template #footer>
+      <el-button type="danger" @click="exit">Exit</el-button>
+    </template>
+  </el-dialog>
 </template>
 
 <script>
@@ -37,10 +51,52 @@ import Card from "./Card.vue";
 
 export default {
   name: "GamePad",
+  data() {
+    return {
+      dialogVisible: false,
+    };
+  },
   props: {
     gameId: String,
+    userInfo: Object,
+  },
+  emits: {
+    finish: null,
   },
   components: { Card },
+  methods: {
+    joinGame() {
+      //console.log("gamepad joining game" + this.gameId);
+      this.dialogVisible = true;
+    },
+    exit() {
+      var dto = {
+        id: this.gameId,
+      };
+      this.axios({
+        method: "delete",
+        url: "/api/waiting-hall/quit_game",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: this.userInfo.token,
+        },
+        data: dto,
+      });
+      this.dialogVisible = false;
+      this.finishGame();
+    },
+    finishGame() {
+      this.$emit("finish");
+    },
+  },
+  watch: {
+    gameId(newGameId) {
+      if (newGameId != null) {
+        this.joinGame();
+      }
+      return true;
+    },
+  },
 };
 </script>
 
