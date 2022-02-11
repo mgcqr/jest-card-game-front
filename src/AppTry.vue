@@ -1,29 +1,17 @@
 <template>
-  <!-- <img alt="Vue logo" src="./assets/logo.png" /> -->
-  <!-- <GamePad></GamePad> -->
-  <Demo></Demo>
-
-  <!-- <el-dialog v-model="visible" :fullscreen="true"> </el-dialog> -->
-
-  <!-- <Login></Login> -->
+  <WebSocket></WebSocket>
 </template>
 <script>
 import "animate.css";
-// import GamePad from "./components/GamePad.vue";
-// import Login from "./components/Login.vue";
-import Demo from "./demo/demo.vue";
+import WebSocket from "./components/WebSocket.vue";
 
 export default {
   name: "AppTry",
   data() {
-    return {
-      visible: true,
-    };
+    return {};
   },
   components: {
-    // GamePad,
-    Demo,
-    // Login,
+    WebSocket,
   },
 };
 </script>
