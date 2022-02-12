@@ -39,6 +39,7 @@ function thenFun(response, that) {
   that.token = ResponseReader.getPayload(response).token;
   if (that.loginMsg === "ok") {
     var userInfo = {
+      id: ResponseReader.getPayload(response).id,
       name: that.userName,
       token: that.token,
     };
