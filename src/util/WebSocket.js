@@ -35,17 +35,13 @@ export default {
       console.log("websocket发生了错误");
     }
   },
-  sendMessage() {
+  sendMessage(message) {
     if(typeof(WebSocket) == "undefined") {
       console.log("您的浏览器不支持WebSocket");
       return
     }
-    var obj = {
-      token : "FF-FF-FF"
-    }
-    var msg = JSON.stringify(obj);
-    console.log(msg);
-    socket.send(msg);
+    console.log(message);
+    socket.send(JSON.stringify(message));
     
   },
   closeSocket(){

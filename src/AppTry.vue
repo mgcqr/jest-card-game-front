@@ -1,9 +1,9 @@
 <template>
-  <WebSocket></WebSocket>
+  <WebsocketDebug></WebsocketDebug>
 </template>
 <script>
 import "animate.css";
-import WebSocket from "./components/WebSocket.vue";
+import WebsocketDebug from "./demo/WebsocketDebug.vue";
 
 export default {
   name: "AppTry",
@@ -11,7 +11,7 @@ export default {
     return {};
   },
   components: {
-    WebSocket,
+    WebsocketDebug,
   },
 };
 </script>
@@ -32,6 +32,6 @@ body,
   padding: 0;
   height: 100%;
   width: 100%;
-  background-color: rgb(103, 171, 0);
+  /* background-color: rgb(103, 171, 0); */
 }
 </style>
