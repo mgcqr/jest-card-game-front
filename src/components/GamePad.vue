@@ -6,7 +6,7 @@
           <Card cardName="CardBack"></Card>
           <Card cardName="CardBack"></Card>
         </el-col>
-        <el-col :span="18"></el-col>
+        <el-col :span="18"><WebSocket></WebSocket></el-col>
         <el-col :span="3">
           <Card cardName="CardBack"></Card>
           <Card cardName="CardBack"></Card>
@@ -48,6 +48,7 @@
 
 <script>
 import Card from "./Card.vue";
+import WebSocket from "./WebSocket.vue";
 
 export default {
   name: "GamePad",
@@ -59,11 +60,12 @@ export default {
   props: {
     gameId: String,
     userInfo: Object,
+    token: String,
   },
   emits: {
     finish: null,
   },
-  components: { Card },
+  components: { Card, WebSocket },
   methods: {
     joinGame() {
       //console.log("gamepad joining game" + this.gameId);
@@ -94,7 +96,6 @@ export default {
       if (newGameId != null) {
         this.joinGame();
       }
-      return true;
     },
   },
 };

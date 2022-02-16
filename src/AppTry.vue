@@ -1,9 +1,10 @@
 <template>
-  <WebsocketDebug></WebsocketDebug>
+  <GetJoke ref="GetJoke"></GetJoke>
+  <button @click="clickhan">asdasd</button>
 </template>
 <script>
 import "animate.css";
-import WebsocketDebug from "./demo/WebsocketDebug.vue";
+import GetJoke from "./demo/GetJoke.vue";
 
 export default {
   name: "AppTry",
@@ -11,7 +12,12 @@ export default {
     return {};
   },
   components: {
-    WebsocketDebug,
+    GetJoke,
+  },
+  methods: {
+    clickhan() {
+      this.$refs.GetJoke.load();
+    },
   },
 };
 </script>
