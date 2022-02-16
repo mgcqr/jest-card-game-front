@@ -6,7 +6,7 @@
           <Card cardName="CardBack"></Card>
           <Card cardName="CardBack"></Card>
         </el-col>
-        <el-col :span="18"><WebSocket></WebSocket></el-col>
+        <el-col :span="18"></el-col>
         <el-col :span="3">
           <Card cardName="CardBack"></Card>
           <Card cardName="CardBack"></Card>
@@ -18,15 +18,12 @@
       <el-row>
         <el-col :span="3"><Card cardName="CardBack"></Card></el-col>
         <el-col :span="3"><Card cardName="CardBack"></Card></el-col>
-        <el-col :span="4"></el-col>
-        <el-col :span="1"><Card cardName="Heart2" animation="test" pop></Card></el-col>
-        <el-col :span="1"><Card cardName="Heart2" animation="TEST" pop></Card></el-col>
-        <el-col :span="1"><Card cardName="Heart2" pop></Card></el-col>
-        <el-col :span="1"><Card cardName="Heart2" pop></Card></el-col>
-        <el-col :span="1"><Card cardName="Heart2" pop></Card></el-col>
-        <el-col :span="1"><Card cardName="Heart2" pop></Card></el-col>
-        <el-col :span="1"><Card cardName="Heart2" pop></Card></el-col>
-        <el-col :span="1"><Card cardName="Heart2" pop></Card></el-col>
+        <el-col :span="3"></el-col>
+        <el-col :span="3"><Card cardName="Heart2" animation="test" pop></Card></el-col>
+        <el-col :span="3"><Card cardName="Heart2" animation="TEST" pop></Card></el-col>
+        <el-col :span="3"><Card cardName="Heart2" pop></Card></el-col>
+        <el-col :span="3"><Card cardName="Heart2" pop></Card></el-col>
+        <el-col :span="3"><Card cardName="Heart2" pop></Card></el-col>
       </el-row>
     </el-footer>
   </el-container>
@@ -44,6 +41,8 @@
       <el-button type="danger" @click="exit">Exit</el-button>
     </template>
   </el-dialog>
+
+  <WebSocket ref="websocket" :userInfo="this.userInfo"></WebSocket>
 </template>
 
 <script>
@@ -70,6 +69,7 @@ export default {
     joinGame() {
       //console.log("gamepad joining game" + this.gameId);
       this.dialogVisible = true;
+      this.$refs.websocket.openSocket();
     },
     exit() {
       var dto = {

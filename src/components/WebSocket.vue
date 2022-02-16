@@ -1,10 +1,5 @@
 <template>
-  <div>
-    <div><button @click="openSocket">开启socket</button></div>
-    <div><textarea v-model="msgIn"></textarea></div>
-    <div><button @click="sendMessage">发送消息</button></div>
-    <div><button @click="closeSocket">关闭socket</button></div>
-  </div>
+  <div></div>
 </template>
 
 <script>
@@ -12,6 +7,15 @@ export default {
   name: "Websocket",
   data() {
     return { socket: null, msgIn: null };
+  },
+  props: {
+    userInfo: Object,
+  },
+  emits: {
+    Initial: null,
+    Info: null,
+    MakeOffer: null,
+    TakeCard: null,
   },
   methods: {
     openSocket() {
@@ -27,12 +31,17 @@ export default {
       //创建连接
       this.socket = new WebSocket(socketUrl);
       //打开事件
-      this.socket.onopen = function () {
+      this.socket.onopen = () => {
         console.log("websocket已打开");
+
+        var initialDto = {
+          type: "Initial",
+          token: this.userInfo.token,
+        };
+        this.sendMessage(initialDto);
       };
       //获得消息事件
       this.socket.onmessage = function (msg) {
-        // var serverMsg = "收到服务端信息：" + msg.data;
         console.log(JSON.parse(msg.data));
       };
       //关闭事件
@@ -44,13 +53,9 @@ export default {
         console.log("websocket发生了错误");
       };
     },
-    // sendMessage(messageObj) {
-    //   console.log(messageObj);
-    //   this.socket.send(JSON.stringify(messageObj));
-    // },
-    sendMessage() {
-      console.log(this.msgIn);
-      this.socket.send(this.msgIn);
+    sendMessage(messageObj) {
+      console.log(messageObj);
+      this.socket.send(JSON.stringify(messageObj));
     },
     closeSocket() {
       this.socket.close();
