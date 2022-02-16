@@ -72,17 +72,20 @@ export default {
         cardName: "joker",
         animation: "test",
         pop: false,
+        show: true,
       },
       leftJest: [
         {
           cardName: "Heart1",
           animation: "test",
           pop: false,
+          show: true,
         },
         {
           cardName: "Heart2",
           animation: "test",
           pop: true,
+          show: true,
         },
       ],
     };
@@ -134,7 +137,10 @@ export default {
 
     click() {
       var newObj = Object.assign({}, this.cardControlObj);
-      newObj.cardName = "Heart4";
+      newObj.cardName = "Heart1";
+      newObj.animation = "TEST";
+      newObj.show = false;
+
       this.cardControlObj = newObj;
     },
   },

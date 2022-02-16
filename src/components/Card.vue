@@ -2,7 +2,11 @@
   <el-popover placement="top" width="auto" trigger="hover" :disabled="!pop">
     <template #reference>
       <transition :appear="true" :name="animation">
-        <el-card class="box-card animate__animated" :body-style="{ padding: '0px' }">
+        <el-card
+          class="box-card animate__animated"
+          :body-style="{ padding: '0px' }"
+          v-show="show"
+        >
           <img :src="imageSrc" class="image" />
         </el-card>
       </transition>
@@ -20,6 +24,7 @@ export default {
       animation: null,
       pop: false,
       imageSrc: null,
+      show: true,
     };
   },
   props: {
@@ -30,6 +35,7 @@ export default {
       this.cardName = controlObj.cardName;
       this.animation = controlObj.animation;
       this.pop = controlObj.pop;
+      this.show = controlObj.show;
 
       if (this.cardName != null && this.cardName != undefined) {
         this.imageSrc = require("../assets/card-img/" + this.cardName + ".png");
@@ -64,8 +70,8 @@ export default {
   animation: backOutLeft; /* referring directly to the animation's @keyframe declaration */
   animation-duration: 1s; /* don't forget to set a duration! */
 }
-.TEST-enter-active {
-  animation: backInDown; /* referring directly to the animation's @keyframe declaration */
+.TEST-leave-active {
+  animation: backOutUp; /* referring directly to the animation's @keyframe declaration */
   animation-duration: 1s; /* don't forget to set a duration! */
 }
 </style>

@@ -16,7 +16,8 @@ defined in Login.vue
 var cardControlObj = {
     cardName: String,
     animation: String,
-    pop: Boolean,    
+    pop: Boolean,  
+    show: Boolean
 }
 ```
 
