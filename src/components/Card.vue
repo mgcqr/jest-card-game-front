@@ -19,17 +19,17 @@ export default {
       cardName: null,
       animation: null,
       pop: false,
-      imageSrc: require("../assets/card-img/CardBack.png"),
+      imageSrc: null,
     };
   },
   props: {
     cardControlObj: Object,
   },
-  watch: {
-    cardControlObj(newCardControlObj) {
-      this.cardName = newCardControlObj.cardName;
-      this.animation = newCardControlObj.animation;
-      this.pop = newCardControlObj.pop;
+  methods: {
+    refresh(controlObj) {
+      this.cardName = controlObj.cardName;
+      this.animation = controlObj.animation;
+      this.pop = controlObj.pop;
 
       if (this.cardName != null && this.cardName != undefined) {
         this.imageSrc = require("../assets/card-img/" + this.cardName + ".png");
@@ -37,6 +37,14 @@ export default {
         this.imageSrc = require("../assets/card-img/CardBack.png");
       }
     },
+  },
+  watch: {
+    cardControlObj(newCardControlObj) {
+      this.refresh(newCardControlObj);
+    },
+  },
+  mounted() {
+    this.refresh(this.cardControlObj);
   },
 };
 </script>

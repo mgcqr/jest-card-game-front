@@ -3,8 +3,9 @@
     <el-main class="el-red-border">
       <el-row>
         <el-col :span="3">
-          <Card :cardControlObj="this.cardControlObj"></Card>
-          <Card :cardControlObj="this.cardControlObj"></Card>
+          <template v-for="obj in leftJest" :key="obj">
+            <Card :cardControlObj="obj"></Card>
+          </template>
         </el-col>
         <el-col :span="18"></el-col>
         <el-col :span="3">
@@ -70,8 +71,20 @@ export default {
       cardControlObj: {
         cardName: "joker",
         animation: "test",
-        pop: true,
+        pop: false,
       },
+      leftJest: [
+        {
+          cardName: "Heart1",
+          animation: "test",
+          pop: false,
+        },
+        {
+          cardName: "Heart2",
+          animation: "test",
+          pop: true,
+        },
+      ],
     };
   },
   props: {
@@ -120,11 +133,9 @@ export default {
     resultHandler() {},
 
     click() {
-      this.cardControlObj = {
-        cardName: "Heart4",
-        animation: "test",
-        pop: true,
-      };
+      var newObj = Object.assign({}, this.cardControlObj);
+      newObj.cardName = "Heart4";
+      this.cardControlObj = newObj;
     },
   },
   watch: {
