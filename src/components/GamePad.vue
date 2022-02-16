@@ -42,7 +42,15 @@
     </template>
   </el-dialog>
 
-  <WebSocket ref="websocket" :userInfo="this.userInfo"></WebSocket>
+  <WebSocket
+    ref="websocket"
+    :userInfo="this.userInfo"
+    @Initial="initialHandler"
+    @Info="infoHandler"
+    @MakeOffer="makeOfferHandler"
+    @TakeCard="takeCardHandler"
+    @Result="resultHandler"
+  ></WebSocket>
 </template>
 
 <script>
@@ -90,6 +98,11 @@ export default {
     finishGame() {
       this.$emit("finish");
     },
+    initialHandler() {},
+    infoHandler() {},
+    makeOfferHandler() {},
+    takeCardHandler() {},
+    resultHandler() {},
   },
   watch: {
     gameId(newGameId) {

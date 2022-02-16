@@ -16,6 +16,7 @@ export default {
     Info: null,
     MakeOffer: null,
     TakeCard: null,
+    Result: null,
   },
   methods: {
     openSocket() {
@@ -34,22 +35,27 @@ export default {
       this.socket.onopen = () => {
         console.log("websocket已打开");
 
-        var initialDto = {
+        var initialInstructionDto = {
           type: "Initial",
           token: this.userInfo.token,
         };
-        this.sendMessage(initialDto);
+        this.sendMessage(initialInstructionDto);
       };
       //获得消息事件
-      this.socket.onmessage = function (msg) {
-        console.log(JSON.parse(msg.data));
+      this.socket.onmessage = (msg) => {
+        var message = JSON.parse(msg.data);
+        console.log(message);
+        var typeArray = ["Initial", "Info", "MakeOffer", "TakeCard", "Result"];
+        if (typeArray.includes(message.type)) {
+          this.$emit(message.type, message);
+        }
       };
       //关闭事件
-      this.socket.onclose = function () {
+      this.socket.onclose = () => {
         console.log("websocket已关闭");
       };
       //发生了错误事件
-      this.socket.onerror = function () {
+      this.socket.onerror = () => {
         console.log("websocket发生了错误");
       };
     },
