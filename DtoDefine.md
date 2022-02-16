@@ -10,3 +10,13 @@ var userInfo = {
 
 defined in Login.vue
 
+## cardControlObj
+
+```js
+var cardControlObj = {
+    cardName: String,
+    animation: String,
+    pop: Boolean,    
+}
+```
+

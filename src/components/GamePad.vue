@@ -3,30 +3,33 @@
     <el-main class="el-red-border">
       <el-row>
         <el-col :span="3">
-          <Card cardName="CardBack"></Card>
-          <Card cardName="CardBack"></Card>
+          <Card :cardControlObj="this.cardControlObj"></Card>
+          <Card :cardControlObj="this.cardControlObj"></Card>
         </el-col>
         <el-col :span="18"></el-col>
         <el-col :span="3">
-          <Card cardName="CardBack"></Card>
-          <Card cardName="CardBack"></Card>
+          <Card :cardControlObj="this.cardControlObj"></Card>
+          <Card :cardControlObj="this.cardControlObj"></Card>
         </el-col>
       </el-row>
     </el-main>
 
     <el-footer height="auto">
       <el-row>
-        <el-col :span="3"><Card cardName="CardBack"></Card></el-col>
-        <el-col :span="3"><Card cardName="CardBack"></Card></el-col>
-        <el-col :span="3"></el-col>
-        <el-col :span="3"><Card cardName="Heart2" animation="test" pop></Card></el-col>
-        <el-col :span="3"><Card cardName="Heart2" animation="TEST" pop></Card></el-col>
-        <el-col :span="3"><Card cardName="Heart2" pop></Card></el-col>
-        <el-col :span="3"><Card cardName="Heart2" pop></Card></el-col>
-        <el-col :span="3"><Card cardName="Heart2" pop></Card></el-col>
+        <el-col :span="3"><Card :cardControlObj="this.cardControlObj"></Card></el-col>
+        <el-col :span="3"><Card :cardControlObj="this.cardControlObj"></Card></el-col>
+        <el-col :span="3">
+          <button @click="click">button</button>
+        </el-col>
+        <el-col :span="3"><Card :cardControlObj="this.cardControlObj"></Card></el-col>
+        <el-col :span="3"><Card :cardControlObj="this.cardControlObj"></Card></el-col>
+        <el-col :span="3"><Card :cardControlObj="this.cardControlObj"></Card></el-col>
+        <el-col :span="3"><Card :cardControlObj="this.cardControlObj"></Card></el-col>
+        <el-col :span="3"><Card :cardControlObj="this.cardControlObj"></Card></el-col>
       </el-row>
     </el-footer>
   </el-container>
+
   <el-dialog
     v-model="dialogVisible"
     title="Joing Game"
@@ -56,12 +59,19 @@
 <script>
 import Card from "./Card.vue";
 import WebSocket from "./WebSocket.vue";
-
 export default {
   name: "GamePad",
   data() {
     return {
       dialogVisible: false,
+      leftUser: null,
+      rightUser: null,
+      trophy: null,
+      cardControlObj: {
+        cardName: "joker",
+        animation: "test",
+        pop: true,
+      },
     };
   },
   props: {
@@ -98,11 +108,24 @@ export default {
     finishGame() {
       this.$emit("finish");
     },
-    initialHandler() {},
+    initialHandler(message) {
+      this.leftUser = message.leftUser;
+      this.rightUser = message.rightUser;
+      this.trophy = message.trophy;
+      this.dialogVisible = false;
+    },
     infoHandler() {},
     makeOfferHandler() {},
     takeCardHandler() {},
     resultHandler() {},
+
+    click() {
+      this.cardControlObj = {
+        cardName: "Heart4",
+        animation: "test",
+        pop: true,
+      };
+    },
   },
   watch: {
     gameId(newGameId) {
@@ -110,6 +133,7 @@ export default {
         this.joinGame();
       }
     },
+    trophy() {},
   },
 };
 </script>

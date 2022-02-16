@@ -1,22 +1,23 @@
 <template>
-  <GetJoke ref="GetJoke"></GetJoke>
-  <button @click="clickhan">asdasd</button>
+  <button @click="handler">change anim</button>
+  <button @click="show = !show">show</button>
+  <Card cardName="Heart2" :animation="anim" v-if="show" />
 </template>
 <script>
 import "animate.css";
-import GetJoke from "./demo/GetJoke.vue";
+import Card from "./components/Card.vue";
 
 export default {
   name: "AppTry",
   data() {
-    return {};
+    return { anim: "test", show: true };
   },
   components: {
-    GetJoke,
+    Card,
   },
   methods: {
-    clickhan() {
-      this.$refs.GetJoke.load();
+    handler() {
+      this.anim = "TEST";
     },
   },
 };

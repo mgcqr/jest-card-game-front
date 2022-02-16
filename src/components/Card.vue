@@ -16,13 +16,27 @@ export default {
   name: "Card",
   data() {
     return {
-      imageSrc: require("../assets/card-img/" + this.cardName + ".png"),
+      cardName: null,
+      animation: null,
+      pop: false,
+      imageSrc: require("../assets/card-img/CardBack.png"),
     };
   },
   props: {
-    cardName: String,
-    animation: String,
-    pop: Boolean,
+    cardControlObj: Object,
+  },
+  watch: {
+    cardControlObj(newCardControlObj) {
+      this.cardName = newCardControlObj.cardName;
+      this.animation = newCardControlObj.animation;
+      this.pop = newCardControlObj.pop;
+
+      if (this.cardName != null && this.cardName != undefined) {
+        this.imageSrc = require("../assets/card-img/" + this.cardName + ".png");
+      } else {
+        this.imageSrc = require("../assets/card-img/CardBack.png");
+      }
+    },
   },
 };
 </script>
