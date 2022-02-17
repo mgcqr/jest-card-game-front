@@ -6,12 +6,13 @@
           class="box-card animate__animated"
           :body-style="{ padding: '0px' }"
           v-show="show"
+          @click="clickHandler"
         >
           <img :src="imageSrc" class="image" />
         </el-card>
       </transition>
     </template>
-    <img :src="imageSrc" class="image" />
+    <img :src="popImageSrc" class="image" />
   </el-popover>
 </template>
 
@@ -21,29 +22,47 @@ export default {
   data() {
     return {
       imageSrc: null,
+      popImageSrc: null,
 
       cardName: null,
       animation: null,
       pop: false,
       show: true,
       faceUp: true,
+      choosable: false,
+      ownerId: null,
     };
   },
   props: {
     cardControlObj: Object,
   },
+  emits: {
+    choose: null,
+  },
   methods: {
     refresh(controlObj) {
+      if (controlObj == null) return;
       this.cardName = controlObj.cardName;
       this.animation = controlObj.animation;
       this.pop = controlObj.pop;
       this.show = controlObj.show;
       this.faceUp = controlObj.faceUp;
+      this.choosable = controlObj.choosable;
+      this.ownerId = controlObj.ownerId;
+
+      if (this.cardName != null && this.cardName != undefined) {
+        this.popImageSrc = require("../assets/card-img/" + this.cardName + ".png");
+      }
 
       if (this.faceUp && this.cardName != null && this.cardName != undefined) {
         this.imageSrc = require("../assets/card-img/" + this.cardName + ".png");
       } else {
         this.imageSrc = require("../assets/card-img/CardBack.png");
+      }
+    },
+    clickHandler() {
+      if (this.choosable) {
+        this.$emit("choose", this.ownerId, this.cardName, this.faceUp);
       }
     },
   },
