@@ -3,7 +3,7 @@
     <el-main class="el-red-border">
       <el-row>
         <el-col :span="3">
-          <template v-for="obj in leftJest" :key="obj">
+          <template v-for="obj in leftOffer" :key="obj">
             <Card :cardControlObj="obj"></Card>
           </template>
         </el-col>
@@ -74,7 +74,7 @@ export default {
         pop: false,
         show: true,
       },
-      leftJest: [
+      leftOffer: [
         {
           cardName: "Heart1",
           animation: "test",
@@ -140,6 +140,19 @@ export default {
       newObj.cardName = "Heart1";
       newObj.animation = "TEST";
       newObj.show = false;
+
+      var leftCard = this.leftOffer[0];
+      var card = Object.assign({}, leftCard);
+      card.cardName = "Diamond1";
+      this.leftOffer[0] = card;
+
+      var newLeftCard = {
+        cardName: "Spade1",
+        animation: "test",
+        pop: false,
+        show: true,
+      };
+      this.leftOffer[2] = newLeftCard;
 
       this.cardControlObj = newObj;
     },
