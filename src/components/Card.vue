@@ -20,11 +20,13 @@ export default {
   name: "Card",
   data() {
     return {
+      imageSrc: null,
+
       cardName: null,
       animation: null,
       pop: false,
-      imageSrc: null,
       show: true,
+      faceUp: true,
     };
   },
   props: {
@@ -36,8 +38,9 @@ export default {
       this.animation = controlObj.animation;
       this.pop = controlObj.pop;
       this.show = controlObj.show;
+      this.faceUp = controlObj.faceUp;
 
-      if (this.cardName != null && this.cardName != undefined) {
+      if (this.faceUp && this.cardName != null && this.cardName != undefined) {
         this.imageSrc = require("../assets/card-img/" + this.cardName + ".png");
       } else {
         this.imageSrc = require("../assets/card-img/CardBack.png");
