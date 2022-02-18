@@ -4,29 +4,75 @@
       <el-row>
         <el-col :span="3">
           <template v-for="obj in leftOffer" :key="obj">
-            <Card :cardControlObj="obj"></Card>
+            <Card
+              :cardControlObj="obj"
+              :shadowClearFlag="this.shadowClearFlag"
+              @choose="cardChosenHandler"
+            ></Card>
           </template>
         </el-col>
-        <el-col :span="18"></el-col>
+        <el-col :span="18">
+          <el-row justify="space-around">
+            <el-col :span="4">
+              <Card
+                :cardControlObj="this.trophyObj[0]"
+                :shadowClearFlag="this.shadowClearFlag"
+                @choose="cardChosenHandler"
+              ></Card>
+            </el-col>
+            <el-col :span="4"
+              ><Card
+                :cardControlObj="{
+                  cardName: 'logo',
+                  animation: null,
+                  pop: false,
+                  show: true,
+                  faceUp: true,
+                }"
+              ></Card
+            ></el-col>
+            <el-col :span="4">
+              <Card
+                :cardControlObj="this.trophyObj[1]"
+                :shadowClearFlag="this.shadowClearFlag"
+                @choose="cardChosenHandler"
+              ></Card>
+            </el-col>
+          </el-row>
+        </el-col>
         <el-col :span="3">
-          <Card :cardControlObj="this.cardControlObj"></Card>
-          <Card :cardControlObj="this.cardControlObj"></Card>
+          <template v-for="obj in rightOffer" :key="obj">
+            <Card
+              :cardControlObj="obj"
+              :shadowClearFlag="this.shadowClearFlag"
+              @choose="cardChosenHandler"
+            ></Card>
+          </template>
         </el-col>
       </el-row>
     </el-main>
 
     <el-footer height="auto">
       <el-row>
-        <el-col :span="3"><Card :cardControlObj="this.cardControlObj"></Card></el-col>
-        <el-col :span="3"><Card :cardControlObj="this.cardControlObj"></Card></el-col>
-        <el-col :span="3">
-          <button @click="click">button</button>
-        </el-col>
-        <el-col :span="3"><Card :cardControlObj="this.cardControlObj"></Card></el-col>
-        <el-col :span="3"><Card :cardControlObj="this.cardControlObj"></Card></el-col>
-        <el-col :span="3"><Card :cardControlObj="this.cardControlObj"></Card></el-col>
-        <el-col :span="3"><Card :cardControlObj="this.cardControlObj"></Card></el-col>
-        <el-col :span="3"><Card :cardControlObj="this.cardControlObj"></Card></el-col>
+        <template v-for="obj in userOffer" :key="obj">
+          <el-col :span="3"
+            ><Card
+              :cardControlObj="obj"
+              :shadowClearFlag="this.shadowClearFlag"
+              @choose="cardChosenHandler"
+            ></Card
+          ></el-col>
+        </template>
+        <el-col :span="3"> {{ state }} <button @click="click">button</button></el-col>
+        <template v-for="obj in 5" :key="obj">
+          <el-col :span="3"
+            ><Card
+              :cardControlObj="this.cardControlObj"
+              :shadowClearFlag="this.shadowClearFlag"
+              @choose="cardChosenHandler"
+            ></Card
+          ></el-col>
+        </template>
       </el-row>
     </el-footer>
   </el-container>
@@ -49,43 +95,133 @@
   <WebSocket
     ref="websocket"
     :userInfo="this.userInfo"
-    @Initial="initialHandler"
-    @Info="infoHandler"
-    @MakeOffer="makeOfferHandler"
-    @TakeCard="takeCardHandler"
-    @Result="resultHandler"
+    @initial="initialHandler"
+    @info="infoHandler"
+    @makeoffer="makeOfferHandler"
+    @takecard="takeCardHandler"
+    @result="resultHandler"
   ></WebSocket>
 </template>
 
 <script>
 import Card from "./Card.vue";
 import WebSocket from "./WebSocket.vue";
+const basicCardObj = {
+  cardName: null,
+  animation: null,
+  ownerId: null,
+  pop: false,
+  show: true,
+  faceUp: false,
+  choosable: false,
+};
+function copyCard(src) {
+  return Object.assign({}, src);
+}
+function getCard(cardName, ownerId) {
+  var card = copyCard(basicCardObj);
+  card.cardName = cardName;
+  card.ownerId = ownerId;
+  card.faceUp = true;
+  return card;
+}
 export default {
   name: "GamePad",
   data() {
     return {
       dialogVisible: false,
-      leftUser: null,
-      rightUser: null,
-      trophy: null,
-      cardControlObj: {
-        cardName: "joker",
-        animation: "test",
-        pop: false,
-        show: true,
-      },
-      leftOffer: [
+      shadowClearFlag: null,
+      state: null,
+      trophyObj: [
         {
           cardName: "Heart1",
           animation: "test",
           pop: false,
           show: true,
+          faceUp: true,
+          ownerId: null,
+          choosable: true,
         },
         {
           cardName: "Heart2",
           animation: "test",
           pop: true,
           show: true,
+          faceUp: true,
+          ownerId: null,
+          choosable: false,
+        },
+      ],
+
+      cardControlObj: {
+        cardName: "joker",
+        animation: "test",
+        pop: false,
+        show: true,
+        faceUp: true,
+        ownerId: null,
+        choosable: false,
+      },
+
+      leftUser: null,
+      rightUser: null,
+      leftOffer: [
+        {
+          cardName: "Heart1",
+          animation: "test",
+          pop: false,
+          show: true,
+          faceUp: true,
+          ownerId: null,
+          choosable: true,
+        },
+        {
+          cardName: "Heart2",
+          animation: "test",
+          pop: true,
+          show: true,
+          faceUp: true,
+          ownerId: null,
+          choosable: false,
+        },
+      ],
+      rightOffer: [
+        {
+          cardName: "Heart1",
+          animation: "test",
+          pop: false,
+          show: true,
+          faceUp: true,
+          ownerId: null,
+          choosable: false,
+        },
+        {
+          cardName: "Heart2",
+          animation: "test",
+          pop: true,
+          show: true,
+          faceUp: true,
+          choosable: false,
+        },
+      ],
+      userOffer: [
+        {
+          cardName: "Heart1",
+          animation: "test",
+          pop: false,
+          show: false,
+          faceUp: true,
+          ownerId: null,
+          choosable: false,
+        },
+        {
+          cardName: "Heart2",
+          animation: "test",
+          pop: true,
+          show: false,
+          faceUp: true,
+          ownerId: null,
+          choosable: false,
         },
       ],
     };
@@ -106,7 +242,7 @@ export default {
       this.$refs.websocket.openSocket();
     },
     exit() {
-      var dto = {
+      let dto = {
         id: this.gameId,
       };
       this.axios({
@@ -125,34 +261,85 @@ export default {
       this.$emit("finish");
     },
     initialHandler(message) {
-      this.leftUser = message.leftUser;
-      this.rightUser = message.rightUser;
-      this.trophy = message.trophy;
+      this.state = "Initial";
+
+      this.leftUser = message.left_user;
+      this.rightUser = message.right_user;
+      let trophy = message.trophy;
+      for (let i = 0; i < 2; i++) {
+        this.trophyObj[i] = getCard(trophy[i]);
+      }
+
       this.dialogVisible = false;
     },
-    infoHandler() {},
-    makeOfferHandler() {},
+    infoHandler(message) {
+      if (message.user_id === this.userInfo.id) {
+        //Dismiss local message
+        return;
+      }
+      if (message.operation === "MakeOffer") {
+        if (message.user_id === this.leftUser.id) {
+          this.leftOffer[0] = getCard(message.card_name, message.user_id);
+          let cardDown = copyCard(basicCardObj);
+          cardDown.ownerId = message.user_id;
+          this.leftOffer[1] = cardDown;
+        } else if (message.user_id === this.rightUser.id) {
+          this.rightOffer[0] = getCard(message.card_name, message.user_id);
+          let cardDown = copyCard(basicCardObj);
+          cardDown.ownerId = message.user_id;
+          this.rightOffer[1] = cardDown;
+        }
+      } else if (message.operation === "TakeCard") {
+        return;
+      }
+    },
+    makeOfferHandler(message) {
+      this.state = "MakeOffer";
+      for (let i = 0; i < 2; i++) {
+        let card = getCard(message.offer_card_names[i], this.userInfo.id);
+        card.choosable = true;
+        this.userOffer[i] = card;
+      }
+    },
     takeCardHandler() {},
     resultHandler() {},
+    cardChosenHandler(ownerId, cardName, faceUp) {
+      console.log("handler");
+      if (this.state === "MakeOffer") {
+        let instructionDto = {
+          type: "MakeOffer",
+          token: this.userInfo.token,
+          card_name: cardName,
+        };
+        this.$refs.websocket.sendMessage(instructionDto);
+      } else if (this.state === "TakeCard") {
+        console.log(ownerId + cardName + faceUp);
+      }
+
+      //send an arbitrary boject
+      this.shadowClearFlag = { key: "val" };
+    },
 
     click() {
-      var newObj = Object.assign({}, this.cardControlObj);
-      newObj.cardName = "Heart1";
+      //this.state = "TakeOffer";
+      let newObj = Object.assign({}, this.cardControlObj);
+      newObj.cardName = "Spade1";
       newObj.animation = "TEST";
       newObj.show = false;
+      newObj.choosable = false;
 
-      var leftCard = this.leftOffer[0];
-      var card = Object.assign({}, leftCard);
-      card.cardName = "Diamond1";
-      this.leftOffer[0] = card;
+      // let leftCard = this.leftOffer[0];
+      // let card = Object.assign({}, leftCard);
+      // card.cardName = "Diamond1";
+      // this.leftOffer[0] = card;
 
-      var newLeftCard = {
-        cardName: "Spade1",
-        animation: "test",
-        pop: false,
-        show: true,
-      };
-      this.leftOffer[2] = newLeftCard;
+      // let newLeftCard = {
+      //   cardName: "Spade1",
+      //   animation: "test",
+      //   pop: false,
+      //   show: true,
+      // };
+      // this.leftOffer[2] = newLeftCard;
 
       this.cardControlObj = newObj;
     },

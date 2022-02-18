@@ -16,8 +16,26 @@ defined in Login.vue
 var cardControlObj = {
     cardName: String,
     animation: String,
+    ownerId:String
     pop: Boolean,  
     show: Boolean
+    faceUp:Boolean
+    choosable:Boolean
 }
 ```
 
+card default is a card
+
+* face down
+* non-pop
+* non-choosable
+* show up
+
+card acquired by fun getCard is
+
+* has name
+* has owner
+* face Up
+* show up
+* non-pop
+* non-choosable

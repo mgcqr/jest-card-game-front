@@ -12,11 +12,11 @@ export default {
     userInfo: Object,
   },
   emits: {
-    Initial: null,
-    Info: null,
-    MakeOffer: null,
-    TakeCard: null,
-    Result: null,
+    initial: null,
+    info: null,
+    makeoffer: null,
+    takecard: null,
+    result: null,
   },
   methods: {
     openSocket() {
@@ -47,7 +47,7 @@ export default {
         console.log(message);
         var typeArray = ["Initial", "Info", "MakeOffer", "TakeCard", "Result"];
         if (typeArray.includes(message.type)) {
-          this.$emit(message.type, message);
+          this.$emit(message.type.toLowerCase(), message);
         }
       };
       //关闭事件

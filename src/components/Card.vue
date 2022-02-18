@@ -3,12 +3,12 @@
     <template #reference>
       <transition :appear="true" :name="animation">
         <el-card
-          class="box-card animate__animated"
+          :class="cardClass"
           :body-style="{ padding: '0px' }"
           v-show="show"
           @click="clickHandler"
         >
-          <img :src="imageSrc" class="image" />
+          <div class="shadow"><img :src="imageSrc" class="image" /></div>
         </el-card>
       </transition>
     </template>
@@ -23,6 +23,7 @@ export default {
     return {
       imageSrc: null,
       popImageSrc: null,
+      cardClass: "box-card animate__animated",
 
       cardName: null,
       animation: null,
@@ -34,6 +35,7 @@ export default {
     };
   },
   props: {
+    shadowClearFlag: Object,
     cardControlObj: Object,
   },
   emits: {
@@ -70,6 +72,17 @@ export default {
     cardControlObj(newCardControlObj) {
       this.refresh(newCardControlObj);
     },
+    shadowClearFlag() {
+      // console.log("flag renew");
+      this.choosable = false;
+    },
+    choosable() {
+      if (this.choosable) {
+        this.cardClass = "box-card animate__animated shadow";
+      } else {
+        this.cardClass = "box-card animate__animated";
+      }
+    },
   },
   mounted() {
     this.refresh(this.cardControlObj);
@@ -82,6 +95,9 @@ export default {
   /* 截图截出来是156*207 */
   width: 156px;
   height: 207px;
+}
+.shadow {
+  box-shadow: 0px 0px 25px 10px yellow;
 }
 
 .test-enter-active {

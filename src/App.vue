@@ -68,6 +68,6 @@ body,
   padding: 0;
   height: 100%;
   width: 100%;
-  background-color: rgb(103, 171, 0);
+  background-color: rgb(68, 110, 4);
 }
 </style>
