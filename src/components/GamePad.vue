@@ -131,7 +131,7 @@ export default {
     return {
       dialogVisible: false,
       shadowClearFlag: null,
-      state: null,
+      state: "Waiting",
       trophyObj: [
         {
           cardName: "Heart1",
@@ -307,7 +307,31 @@ export default {
         this.userOffer[i] = card;
       }
     },
-    takeCardHandler() {},
+    takeCardHandler(message) {
+      this.state = "TakeCard";
+      let availableOffers = message.available_offers;
+      for (let target_user_id in availableOffers) {
+        if (target_user_id === this.userInfo.id) {
+          for (let i = 0; i < 2; i++) {
+            let card = copyCard(this.userOffer[i]);
+            card.choosable = true;
+            this.userOffer[i] = card;
+          }
+        } else if (target_user_id === this.leftUser.id) {
+          for (let i = 0; i < 2; i++) {
+            let card = copyCard(this.leftOffer[i]);
+            card.choosable = true;
+            this.leftOffer[i] = card;
+          }
+        } else if (target_user_id === this.rightUser.id) {
+          for (let i = 0; i < 2; i++) {
+            let card = copyCard(this.rightOffer[i]);
+            card.choosable = true;
+            this.rightOffer[i] = card;
+          }
+        }
+      }
+    },
     resultHandler() {},
     cardChosenHandler(ownerId, cardName, faceUp) {
       console.log("ChosenHandler");
@@ -319,10 +343,21 @@ export default {
         };
         this.$refs.websocket.sendMessage(instructionDto);
       } else if (this.state === "TakeCard") {
-        console.log(ownerId + cardName + faceUp);
+        // console.log(ownerId + cardName + faceUp);
+        let instructionDto = {
+          type: "TakeCard",
+          token: this.userInfo.token,
+          is_face_up: faceUp,
+          target_user_id: ownerId,
+        };
+        this.$refs.websocket.sendMessage(instructionDto);
       }
 
-      //send an arbitrary boject
+      this.state = "Waiting";
+      this.clearShadow();
+    },
+    clearShadow() {
+      //send an arbitrary object
       this.shadowClearFlag = { key: "val" };
     },
 
