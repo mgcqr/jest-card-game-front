@@ -31,7 +31,7 @@ card default is a card
 * non-choosable
 * show up
 
-card acquired by fun getCard is
+card acquired by fun getCard(cardName, ownerId) is
 
 * has name
 * has owner

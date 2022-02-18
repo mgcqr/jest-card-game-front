@@ -273,11 +273,17 @@ export default {
       this.dialogVisible = false;
     },
     infoHandler(message) {
-      if (message.user_id === this.userInfo.id) {
-        //Dismiss local message
-        return;
-      }
       if (message.operation === "MakeOffer") {
+        if (message.user_id === this.userInfo.id) {
+          for (let i = 0; i < 2; i++) {
+            if (this.userOffer[i].cardName != message.card_name) {
+              let card = getCard(this.userOffer[i].cardName, this.userInfo.id);
+              card.faceUp = false;
+              card.pop = true;
+              this.userOffer[i] = card;
+            }
+          }
+        }
         if (message.user_id === this.leftUser.id) {
           this.leftOffer[0] = getCard(message.card_name, message.user_id);
           let cardDown = copyCard(basicCardObj);
@@ -304,7 +310,7 @@ export default {
     takeCardHandler() {},
     resultHandler() {},
     cardChosenHandler(ownerId, cardName, faceUp) {
-      console.log("handler");
+      console.log("ChosenHandler");
       if (this.state === "MakeOffer") {
         let instructionDto = {
           type: "MakeOffer",
