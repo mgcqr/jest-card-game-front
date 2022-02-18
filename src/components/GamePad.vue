@@ -101,11 +101,17 @@
     @takecard="takeCardHandler"
     @result="resultHandler"
   ></WebSocket>
+  <FinishPad
+    :message="this.result"
+    :idNameMapper="this.idNameMapper"
+    @finish="finishHandler"
+  ></FinishPad>
 </template>
 
 <script>
 import Card from "./Card.vue";
 import WebSocket from "./WebSocket.vue";
+import FinishPad from "./FinishPad.vue";
 const basicCardObj = {
   cardName: null,
   animation: null,
@@ -132,99 +138,15 @@ export default {
       dialogVisible: false,
       shadowClearFlag: null,
       state: "Waiting",
-      trophyObj: [
-        {
-          cardName: "Heart1",
-          animation: "test",
-          pop: false,
-          show: true,
-          faceUp: true,
-          ownerId: null,
-          choosable: true,
-        },
-        {
-          cardName: "Heart2",
-          animation: "test",
-          pop: true,
-          show: true,
-          faceUp: true,
-          ownerId: null,
-          choosable: false,
-        },
-      ],
-
-      cardControlObj: {
-        cardName: "joker",
-        animation: "test",
-        pop: false,
-        show: true,
-        faceUp: true,
-        ownerId: null,
-        choosable: false,
-      },
-
+      trophyObj: [],
       leftUser: null,
       rightUser: null,
-      leftOffer: [
-        {
-          cardName: "Heart1",
-          animation: "test",
-          pop: false,
-          show: true,
-          faceUp: true,
-          ownerId: null,
-          choosable: true,
-        },
-        {
-          cardName: "Heart2",
-          animation: "test",
-          pop: true,
-          show: true,
-          faceUp: true,
-          ownerId: null,
-          choosable: false,
-        },
-      ],
-      rightOffer: [
-        {
-          cardName: "Heart1",
-          animation: "test",
-          pop: false,
-          show: true,
-          faceUp: true,
-          ownerId: null,
-          choosable: false,
-        },
-        {
-          cardName: "Heart2",
-          animation: "test",
-          pop: true,
-          show: true,
-          faceUp: true,
-          choosable: false,
-        },
-      ],
-      userOffer: [
-        {
-          cardName: "Heart1",
-          animation: "test",
-          pop: false,
-          show: false,
-          faceUp: true,
-          ownerId: null,
-          choosable: false,
-        },
-        {
-          cardName: "Heart2",
-          animation: "test",
-          pop: true,
-          show: false,
-          faceUp: true,
-          ownerId: null,
-          choosable: false,
-        },
-      ],
+      leftOffer: [],
+      rightOffer: [],
+      userOffer: [],
       jest: [],
+      result: null,
+      idNameMapper: [],
     };
   },
   props: {
@@ -235,7 +157,7 @@ export default {
   emits: {
     finish: null,
   },
-  components: { Card, WebSocket },
+  components: { Card, WebSocket, FinishPad },
   methods: {
     joinGame() {
       //console.log("gamepad joining game" + this.gameId);
@@ -388,7 +310,15 @@ export default {
         }
       }
     },
-    resultHandler() {},
+    resultHandler(message) {
+      this.idNameMapper[this.userInfo.id] = this.userInfo.name;
+      this.idNameMapper[this.leftUser.id] = this.leftUser.user_name;
+      this.idNameMapper[this.rightUser.id] = this.rightUser.user_name;
+      this.result = message;
+    },
+    finishHandler() {
+      this.finishGame();
+    },
     cardChosenHandler(ownerId, cardName, faceUp) {
       console.log("ChosenHandler");
       if (this.state === "MakeOffer") {
