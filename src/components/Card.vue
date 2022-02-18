@@ -104,12 +104,20 @@ export default {
   animation: bounceIn; /* referring directly to the animation's @keyframe declaration */
   animation-duration: 1s; /* don't forget to set a duration! */
 }
-.v-leave-active {
+.v-enter-active {
+  animation: zoomIn; /* referring directly to the animation's @keyframe declaration */
+  animation-duration: 1s; /* don't forget to set a duration! */
+}
+.left-leave-active {
   animation: backOutLeft; /* referring directly to the animation's @keyframe declaration */
   animation-duration: 1s; /* don't forget to set a duration! */
 }
-.TEST-leave-active {
-  animation: backOutUp; /* referring directly to the animation's @keyframe declaration */
+.right-leave-active {
+  animation: backOutRight; /* referring directly to the animation's @keyframe declaration */
+  animation-duration: 1s; /* don't forget to set a duration! */
+}
+.down-leave-active {
+  animation: backOutDown; /* referring directly to the animation's @keyframe declaration */
   animation-duration: 1s; /* don't forget to set a duration! */
 }
 </style>

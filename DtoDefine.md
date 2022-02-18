@@ -39,3 +39,4 @@ card acquired by fun getCard(cardName, ownerId) is
 * show up
 * non-pop
 * non-choosable
+* null animation

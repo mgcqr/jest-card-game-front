@@ -64,10 +64,10 @@
           ></el-col>
         </template>
         <el-col :span="3"> {{ state }} <button @click="click">button</button></el-col>
-        <template v-for="obj in 5" :key="obj">
+        <template v-for="obj in jest" :key="obj">
           <el-col :span="3"
             ><Card
-              :cardControlObj="this.cardControlObj"
+              :cardControlObj="obj"
               :shadowClearFlag="this.shadowClearFlag"
               @choose="cardChosenHandler"
             ></Card
@@ -224,6 +224,7 @@ export default {
           choosable: false,
         },
       ],
+      jest: [],
     };
   },
   props: {
@@ -283,8 +284,7 @@ export default {
               this.userOffer[i] = card;
             }
           }
-        }
-        if (message.user_id === this.leftUser.id) {
+        } else if (message.user_id === this.leftUser.id) {
           this.leftOffer[0] = getCard(message.card_name, message.user_id);
           let cardDown = copyCard(basicCardObj);
           cardDown.ownerId = message.user_id;
@@ -296,7 +296,63 @@ export default {
           this.rightOffer[1] = cardDown;
         }
       } else if (message.operation === "TakeCard") {
-        return;
+        console.log("takecard info");
+        let anim = null;
+        if (message.user_id === this.userInfo.id) {
+          anim = "down";
+          let card = getCard(message.card_name, this.userInfo.id);
+          this.jest.push(card);
+        } else if (message.user_id === this.leftUser.id) {
+          anim = "left";
+        } else if (message.user_id === this.rightUser.id) {
+          anim = "right";
+        }
+        if (message.target_user_id === this.userInfo.id) {
+          let index;
+          for (let i = 0; i < 2; i++) {
+            if (this.userOffer[i].faceUp) {
+              index = i;
+            }
+          }
+          if (this.userOffer[index].cardName !== message.card_name) {
+            index = (index + 1) % 2;
+          }
+          let card = copyCard(this.userOffer[index]);
+          card.animation = anim;
+          card.choosable = false;
+          card.show = false;
+          this.userOffer[index] = card;
+        } else if (message.target_user_id === this.leftUser.id) {
+          let index;
+          for (let i = 0; i < 2; i++) {
+            if (this.leftOffer[i].faceUp) {
+              index = i;
+            }
+          }
+          if (this.leftOffer[index].cardName !== message.card_name) {
+            index = (index + 1) % 2;
+          }
+          let card = copyCard(this.leftOffer[index]);
+          card.animation = anim;
+          card.choosable = false;
+          card.show = false;
+          this.leftOffer[index] = card;
+        } else if (message.target_user_id === this.rightUser.id) {
+          let index;
+          for (let i = 0; i < 2; i++) {
+            if (this.rightOffer[i].faceUp) {
+              index = i;
+            }
+          }
+          if (this.rightOffer[index].cardName !== message.card_name) {
+            index = (index + 1) % 2;
+          }
+          let card = copyCard(this.rightOffer[index]);
+          card.animation = anim;
+          card.choosable = false;
+          card.show = false;
+          this.rightOffer[index] = card;
+        }
       }
     },
     makeOfferHandler(message) {
@@ -365,22 +421,22 @@ export default {
       //this.state = "TakeOffer";
       let newObj = Object.assign({}, this.cardControlObj);
       newObj.cardName = "Spade1";
-      newObj.animation = "TEST";
+      newObj.animation = "down";
       newObj.show = false;
       newObj.choosable = false;
 
-      // let leftCard = this.leftOffer[0];
-      // let card = Object.assign({}, leftCard);
-      // card.cardName = "Diamond1";
-      // this.leftOffer[0] = card;
+      let leftCard = this.leftOffer[0];
+      let card = Object.assign({}, leftCard);
+      card.cardName = "Diamond1";
+      this.leftOffer[0] = card;
 
-      // let newLeftCard = {
-      //   cardName: "Spade1",
-      //   animation: "test",
-      //   pop: false,
-      //   show: true,
-      // };
-      // this.leftOffer[2] = newLeftCard;
+      let newLeftCard = {
+        cardName: "Spade1",
+        animation: "right",
+        pop: false,
+        show: false,
+      };
+      this.leftOffer[2] = newLeftCard;
 
       this.cardControlObj = newObj;
     },
